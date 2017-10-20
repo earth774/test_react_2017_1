@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Body from './Components/body.component';
-import Header from './Components/header.component';
-import Calculater from './Components/calculater.component';
+// import Body from './Components/body.component';
+// import Header from './Components/header.component';
+// import Calculater from './Components/calculater.component';
+// import Test from './Components/test.component';
+import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
+import routes from './routing-config';
+import { NoMatch,Calculater } from './Components';
 
 class App extends Component {
   constructor(){
@@ -24,21 +28,37 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-
-        <p className="App-intro">
-          <Header />
-          <Body title={this.state.name} test={this.state.test}/>
-         
-          <input  onChange={this.changetext.bind(this)}/>
-          <button onClick={()=>this.changestate('asdsdsa')}>Change state</button>
-          <Calculater />
-        </p>
-      </div>
+      <BrowserRouter>
+        <div className="App">
+          <div className="App-header">
+            <img src={logo} className="App-logo" alt="logo" />
+            <ul>
+              
+              <li><NavLink to="/" activeClassName="active">Home</NavLink></li>
+              <li><NavLink to="/Calculater" activeClassName="active">Calculater</NavLink></li>
+            </ul>
+          </div>
+          <div className="App-intro">
+            <Switch>
+              {/*
+                        <Route path="/" component={Home} exact={true} />
+                        <Route path="/BasicRouting" component={BasicRouting} />
+                        <Route path="/Blocking" component={Blocking} />
+                        <Route path="/Miss" component={Miss} />
+                        <Route path="/QueryParams" component={QueryParams} />
+                        <Route path="/Recursive" component={Recursive} />
+                        <Route path="/login" component={Login} />
+                        <Route path="/Protected" component={
+                          () => (fakeAuth.isAuthenticated ?
+                            (<ProtectedPage />) :
+                            (<Redirect to={{pathname: "/login", state: {from: "/Protected"}}}/> ))} />
+              */}
+                {routes.map((route,index) => (<Route key={index} path={route.path} component={route.component} exact={route.exact} />))}
+                <Route component={NoMatch} />
+            </Switch>
+          </div>
+        </div>
+      </BrowserRouter>
     );
   }
 }
